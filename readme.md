@@ -143,7 +143,7 @@ The folders and files you see in this repositories, is how it is expected to be 
 
 1. Clone the base boilerplate in the folder **assignment-solution-step5** of your local machine
      
-    `git clone https://gitlab-cts.stackroute.in/database_engine_dotnet/DataMungerStep5_Boilerplate.git`
+    `git clone https://gitlab-cgi.stackroute.in/database_engine_dotnet/DataMungerStep5_Boilerplate.git`
 
 2. Navigate to assignment-solution-step5 folder
 
@@ -157,7 +157,7 @@ The folders and files you see in this repositories, is how it is expected to be 
 
 5. Add your new repository reference as remote
 
-     `git remote add origin https://gitlab-cts.stackroute.in/{{yourusername}}/assignment-solution-step5.git`
+     `git remote add origin https://gitlab-cgi.stackroute.in/{{yourusername}}/assignment-solution-step5.git`
 
      **Note: {{yourusername}} should be replaced by your username from gitlab**
 
