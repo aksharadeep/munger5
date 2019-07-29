@@ -5,9 +5,13 @@ namespace DbEngine.Query.Parser
    */
     public class AggregateFunction
     {
-        // Write logic for constructor
+
+        public string field;
+        public string function;
         public AggregateFunction(string field, string function)
         {
+            this.field = field;
+            this.function = function;
         }
     }
 }

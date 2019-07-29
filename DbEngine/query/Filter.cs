@@ -1,4 +1,6 @@
-﻿namespace DbEngine.Query
+﻿using System;
+
+namespace DbEngine.Query
 {
     //This class contains methods to evaluate expressions
     public class Filter
@@ -8,7 +10,63 @@
      Note: while evaluating string expressions, please handle uppercase and lowercase 
 	 */
 
+       public bool evaluateExpression(string condition, int propertyData, int propertyValue)
+        {
+            bool value=false;
+            switch (condition)
+            {
+                case "<":
+                    value = lessThan(propertyData, propertyValue);
+                    return value;
+                case ">":
+                    value =greaterThan(propertyData, propertyValue);
+                    return value;
+                case "<=":
+                    value= lessThanOrEqualTo(propertyData, propertyValue);
+                    return value;
+                default:
+                    break;
+            }
+            return value;
+        }
+        //Method containing implementation of lessThan operator
+        private bool lessThan(int propertyData, int propertyValue)
+        {
+            if (propertyData < propertyValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        //Method containing implementation of lessThanOrEqualTo operator
+        private bool lessThanOrEqualTo(int propertyData, int propertyValue)
+        {
+            if (propertyData <= propertyValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        //Method containing implementation of greaterThan operator
+        private bool greaterThan(int propertyData, int propertyValue)
+        {
+            if (propertyData > propertyValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
+       
 
 
 
@@ -26,7 +84,7 @@
 
 
 
-        //Method containing implementation of greaterThan operator
+
 
 
 
@@ -41,13 +99,12 @@
 
 
 
-        //Method containing implementation of lessThan operator
+       
 
 
 
 
 
-        //Method containing implementation of lessThanOrEqualTo operator
-
+       
     }
 }

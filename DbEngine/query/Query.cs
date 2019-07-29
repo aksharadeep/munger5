@@ -8,6 +8,7 @@ namespace DbEngine.Query
     {
         QueryParser queryParser =null;
         QueryParameter queryParameter=null;
+        CsvQueryProcessor csvQueryProcessor= null;
 
         /*
 	 * This method will: 
@@ -21,11 +22,13 @@ namespace DbEngine.Query
 
         public DataSet executeQuery(string queryString)
         {
+
             /* instantiate QueryParser class */
 
             /* call parseQuery() method of the class by passing the queryString which will return object of QueryParameter
              */
-
+            queryParser = new QueryParser();
+            queryParameter = queryParser.ParseQuery(queryString);
 
             /*
              * Check for Type of Query based on the QueryParameter object. In this assignment, we will process only queries containing zero, one or multiple where conditions i.e. conditions without aggregate functions, order by clause or group by clause
@@ -36,7 +39,9 @@ namespace DbEngine.Query
             /*
              call the GetDataRow() method of CsvQueryProcessor class by passing the QueryParameter Object to it. This method is supposed to return DataSet
              */
-            return null;
+            csvQueryProcessor = new CsvQueryProcessor(queryParameter.File);
+            DataSet dataSet = csvQueryProcessor.GetDataRow(queryParameter);
+            return dataSet;
         }
     }
 }
