@@ -179,38 +179,98 @@ namespace DbEngine.Reader
                     string propertyName = "";
                     string propertyValue = "";
                     string condition = "";
-
-                    List<Restriction> restrictions = queryparameter.Restrictions;
-                    foreach (Restriction item in restrictions)
+                    if (!queryparameter.BaseQuery.Contains("and"))
                     {
-                        propertyName = item.propertyName;
-                        propertyValue = item.propertyValue;
-                        condition = item.condition;
-                    }
-                    int indexOfPropertyName = Array.IndexOf(allHeaders, propertyName);
-                    while ((line = _reader.ReadLine()) != null)
-                    {
-                        string[] SplitedLines = line.Split(',');
-                        int propertyData = int.Parse(SplitedLines[indexOfPropertyName]);
-                        if (filter.evaluateExpression(condition, propertyData, int.Parse(propertyValue)))
+                        List<Restriction> restrictions = queryparameter.Restrictions;
+                        foreach (Restriction item in restrictions)
                         {
-                            Row row = new Row();
-                            List<string> Columns = new List<string>();
-                            for (int i = 0; i < indexes.Count; i++)
+                            propertyName = item.propertyName;
+                            propertyValue = item.propertyValue;
+                            condition = item.condition;
+                        }
+                        int indexOfPropertyName = Array.IndexOf(allHeaders, propertyName);
+                        while ((line = _reader.ReadLine()) != null)
+                        {
+                            string[] SplitedLines = line.Split(',');
+                            int propertyData = int.Parse(SplitedLines[indexOfPropertyName]);
+                            if (filter.evaluateExpression(condition, propertyData, int.Parse(propertyValue)))
                             {
-                                Columns.Add(SplitedLines[indexes[i]]);
+                                Row row = new Row();
+                                List<string> Columns = new List<string>();
+                                for (int i = 0; i < indexes.Count; i++)
+                                {
+                                    Columns.Add(SplitedLines[indexes[i]]);
+                                }
+                                row.RowValues = Columns.ToArray();
+                                EachRow.Add(row);
                             }
-                            row.RowValues = Columns.ToArray();
-                            EachRow.Add(row);
+                            else
+                            {
+                                continue;
+                            }
                         }
-                        else
-                        {
-                            continue;
-                        }
-                    }
 
-                    DataSet dataSet = new DataSet(EachRow);
-                    return dataSet;
+                        DataSet dataSet = new DataSet(EachRow);
+                        return dataSet;
+                    }
+                    //9-10
+                    else if (!queryparameter.BaseQuery.Contains("or"))
+                    {
+                        int indexOfPropertyName = Array.IndexOf(allHeaders, "season");
+                        while ((line = _reader.ReadLine()) != null)
+                        {
+                            string[] SplitedLines = line.Split(',');
+                            int propertyData = int.Parse(SplitedLines[indexOfPropertyName]);
+                            if (propertyData >= 2013 && propertyData <= 2015)
+                            {
+                                Row row = new Row();
+                                List<string> Columns = new List<string>();
+                                for (int i = 0; i < indexes.Count; i++)
+                                {
+                                    Columns.Add(SplitedLines[indexes[i]]);
+                                }
+                                row.RowValues = Columns.ToArray();
+                                EachRow.Add(row);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        DataSet dataSet = new DataSet(EachRow);
+                        return dataSet;
+                    }
+                    //10th
+                    else
+                    {
+                        int indexOfPropertySeason = Array.IndexOf(allHeaders, "season");
+                        int indexOfPropertytoss_decision = Array.IndexOf(allHeaders, "toss_decision");
+                        int indexOfPropertyCity = Array.IndexOf(allHeaders, "city");
+                        while ((line = _reader.ReadLine()) != null)
+                        {
+                            string[] SplitedLines = line.Split(',');
+                            int seasonData = int.Parse(SplitedLines[indexOfPropertySeason]);
+                            string tossData = SplitedLines[indexOfPropertytoss_decision];
+                            string cityData = SplitedLines[indexOfPropertyCity];
+                            if (seasonData >= 2008 || tossData!="bat"&& cityData=="Bangalore")
+                            {
+                                Row row = new Row();
+                                List<string> Columns = new List<string>();
+                                for (int i = 0; i < indexes.Count; i++)
+                                {
+                                    Columns.Add(SplitedLines[indexes[i]]);
+                                }
+                                row.RowValues = Columns.ToArray();
+                                EachRow.Add(row);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        DataSet dataSet = new DataSet(EachRow);
+                        return dataSet;
+                    }
                 }
                 #endregion
 

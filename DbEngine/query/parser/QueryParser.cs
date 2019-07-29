@@ -202,37 +202,15 @@ namespace DbEngine.Query.Parser
                 restrictionList.Add(restrictionInstance);
             }
             return restrictionList;
-
-
-
-
-            //string propertyName = null;
-            //string propertyValue = null;
-            //string condition = null;
-            //List<Restriction> restrictions = null;
-
-            //if (queryString.Contains("where "))
-            //{
-            //    string[] Wheresplit = queryString.ToLower().Split("where ");
-            //    string conditionString = Wheresplit[1];
-            //    string[] conditionArray = conditionString.Split(" ");
-            //    propertyName = conditionArray[0];
-            //    propertyValue = conditionArray[2];
-            //    condition = conditionArray[1];
-            //    Restriction restriction = new Restriction(propertyName, propertyValue, condition);
-            //    restrictions.Add(restriction);
-            //}
-
-
-            //return restrictions;
         }
         #endregion
         #region GetLogicalOperators
         private List<string> GetLogicalOperators(string queryString)
         {
+            List<string> LogicalString = null;
             String[] query = queryString.ToLower().Split(" ");
             String getLogical = "";
-            if (queryString.Contains("where "))
+            if (queryString.Contains("and || or "))
             {
                 for (int i = 0; i < query.Length; i++)
                 {
@@ -242,8 +220,9 @@ namespace DbEngine.Query.Parser
                         getLogical += query[i] + " ";
                     }
                 }
+                LogicalString = new List<string>(getLogical.Trim().Split(" "));
             }
-            List<string> LogicalString = new List<string>(getLogical.Trim().Split(" "));
+            
             return LogicalString;
         }
         #endregion
