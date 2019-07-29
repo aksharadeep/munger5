@@ -252,7 +252,7 @@ namespace DbEngine.Reader
                             int seasonData = int.Parse(SplitedLines[indexOfPropertySeason]);
                             string tossData = SplitedLines[indexOfPropertytoss_decision];
                             string cityData = SplitedLines[indexOfPropertyCity];
-                            if (seasonData >= 2008 || tossData!="bat"&& cityData=="Bangalore")
+                            if (seasonData >= 2008 || tossData!="bat" && cityData=="Bangalore")
                             {
                                 Row row = new Row();
                                 List<string> Columns = new List<string>();
