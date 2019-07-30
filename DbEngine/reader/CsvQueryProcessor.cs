@@ -214,7 +214,38 @@ namespace DbEngine.Reader
                         return dataSet;
                     }
                     //9-10
-                    else if (!queryparameter.BaseQuery.Contains("or"))
+                    else if (queryparameter.BaseQuery.Contains("or"))
+                    {
+                        int indexOfPropertySeason = Array.IndexOf(allHeaders, "season");
+                        int indexOfPropertytoss_decision = Array.IndexOf(allHeaders, "toss_decision");
+                        int indexOfPropertyCity = Array.IndexOf(allHeaders, "city");
+                        while ((line = _reader.ReadLine()) != null)
+                        {
+                            string[] SplitedLines = line.Split(',');
+                            int seasonData = int.Parse(SplitedLines[indexOfPropertySeason]);
+                            string tossData = SplitedLines[indexOfPropertytoss_decision];
+                            string cityData = SplitedLines[indexOfPropertyCity];
+                            if (seasonData >= 2008 || tossData != "bat" && cityData == "Bangalore")
+                            {
+                                Row row = new Row();
+                                List<string> Columns = new List<string>();
+                                for (int i = 0; i < indexes.Count; i++)
+                                {
+                                    Columns.Add(SplitedLines[indexes[i]]);
+                                }
+                                row.RowValues = Columns.ToArray();
+                                EachRow.Add(row);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        DataSet dataSet = new DataSet(EachRow);
+                        return dataSet;
+                    }
+                    //9th
+                    else
                     {
                         int indexOfPropertyName = Array.IndexOf(allHeaders, "season");
                         while ((line = _reader.ReadLine()) != null)
@@ -239,37 +270,7 @@ namespace DbEngine.Reader
                         }
                         DataSet dataSet = new DataSet(EachRow);
                         return dataSet;
-                    }
-                    //10th
-                    else
-                    {
-                        int indexOfPropertySeason = Array.IndexOf(allHeaders, "season");
-                        int indexOfPropertytoss_decision = Array.IndexOf(allHeaders, "toss_decision");
-                        int indexOfPropertyCity = Array.IndexOf(allHeaders, "city");
-                        while ((line = _reader.ReadLine()) != null)
-                        {
-                            string[] SplitedLines = line.Split(',');
-                            int seasonData = int.Parse(SplitedLines[indexOfPropertySeason]);
-                            string tossData = SplitedLines[indexOfPropertytoss_decision];
-                            string cityData = SplitedLines[indexOfPropertyCity];
-                            if (seasonData >= 2008 || tossData!="bat" && cityData=="Bangalore")
-                            {
-                                Row row = new Row();
-                                List<string> Columns = new List<string>();
-                                for (int i = 0; i < indexes.Count; i++)
-                                {
-                                    Columns.Add(SplitedLines[indexes[i]]);
-                                }
-                                row.RowValues = Columns.ToArray();
-                                EachRow.Add(row);
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        DataSet dataSet = new DataSet(EachRow);
-                        return dataSet;
+
                     }
                 }
                 #endregion
